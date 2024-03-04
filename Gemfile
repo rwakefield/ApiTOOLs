@@ -4,6 +4,8 @@ ruby "3.0.0"
 
 # custom
 gem 'vite_rails'
+gem 'slim'
+gem 'slim-rails'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.3", ">= 7.1.3.2"
