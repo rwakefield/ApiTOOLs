@@ -3,5 +3,13 @@
     "vite": "^5.0.0",
     "vite-plugin-ruby": "^5.0.0"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "path": "^0.12.7",
+    "react-bootstrap": "^2.10.1",
+    "sass": "^1.71.1"
+  },
+  "private": false,
+  "license": "MIT"
 }

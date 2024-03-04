@@ -24,9 +24,6 @@ gem 'puma', '>= 5.0'
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem 'turbo-rails'
 
-# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
-gem 'stimulus-rails'
-
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mswin mswin64 mingw x64_mingw jruby]
 
