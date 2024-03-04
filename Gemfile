@@ -7,6 +7,13 @@ gem 'vite_rails'
 gem 'slim'
 gem 'slim-rails'
 
+group :development, :test do
+  gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem "faker"
+end
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.3", ">= 7.1.3.2"
 
