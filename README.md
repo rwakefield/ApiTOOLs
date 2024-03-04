@@ -1,24 +1,17 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Before Running
 
-Things you may want to cover:
+* `bundle install`
+* `rake db:create`
+* `bin/vite update`
+* `yarn`
 
-* Ruby version
+### Running (local)
 
-* System dependencies
+* `bin/vite dev`
+* `bundle exec rails s`
 
-* Configuration
+### Testing
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* `bundle exec rspec`
