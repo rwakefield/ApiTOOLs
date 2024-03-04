@@ -1,9 +1,11 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "WelcomeController", type: :request do
-  context '#index' do
-    it "will render" do
-      get "/welcome/index"
+require 'rails_helper'
+
+RSpec.describe 'WelcomeController', type: :request do
+  describe '#index' do
+    it 'renders' do
+      get '/welcome/index'
 
       expect(response).to have_http_status :ok
     end
