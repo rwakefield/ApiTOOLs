@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 ruby '3.0.0'
 
 # custom
+gem 'rswag'
 gem 'rubocop', require: false
 gem 'rubocop-rails', require: false
 gem 'rubocop-rspec', require: false
