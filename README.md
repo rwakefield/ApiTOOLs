@@ -4,6 +4,7 @@
 
 * `bundle install`
 * `rake db:create`
+* `rake db:seed`
 * `bin/vite update`
 * `yarn`
 

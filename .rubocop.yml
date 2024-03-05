@@ -14,7 +14,12 @@ Layout/LineLength:
 Metrics/BlockLength:
   Exclude:
     - 'config/environments/development.rb'
+    - 'lib/generators/api_controller_generator.rb'
 
 Metrics/MethodLength:
   Exclude:
     - 'db/migrate/*'
+    - 'lib/generators/api_controller_generator.rb'
+
+Rspec/ExampleLength:
+  Enabled: false
