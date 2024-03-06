@@ -43,3 +43,4 @@ node_modules
 
 .keep
 .DS_Store
+/coverage/

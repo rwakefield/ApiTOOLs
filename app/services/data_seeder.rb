@@ -5,8 +5,13 @@ class DataSeeder
 
   def self.seed_data!
     api = Api.find_or_create_by uuid: API_UUID
-    api.api_routes.find_or_create_by reference_name: 'pets'
-    api.api_routes.find_or_create_by reference_name: 'books'
+    pets = api.api_routes.find_or_initialize_by reference_name: 'pets'
+    pets.save!
+
+    books = api.api_routes.find_or_create_by reference_name: 'books'
+    books.actions = %w[index show]
+    books.save!
+
     Api.refresh!
     Rails.application.reload_routes!
   end

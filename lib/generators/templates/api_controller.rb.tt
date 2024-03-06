@@ -2,14 +2,14 @@
 
 # NOTE: This file is auto generated
 
-class BooksController < ApplicationController
-  def index
+<% module_namespacing do -%>
+class <%= api_route.reference_name.camelize %>Controller < ApplicationController
+<% api_route.actions.each do |action| -%>
+  def <%= action %>
     respond_success
   end
-
-  def show
-    respond_success
-  end
+<%= "\n" unless action == api_route.actions.last -%>
+<% end -%>
 
   private
 
@@ -20,3 +20,4 @@ class BooksController < ApplicationController
     end
   end
 end
+<% end -%>

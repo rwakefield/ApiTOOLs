@@ -9,6 +9,7 @@ gem 'rswag'
 gem 'rubocop', require: false
 gem 'rubocop-rails', require: false
 gem 'rubocop-rspec', require: false
+gem 'simplecov', require: false, group: :test
 gem 'slim'
 gem 'slim-rails'
 gem 'vite_rails'

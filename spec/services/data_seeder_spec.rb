@@ -27,7 +27,6 @@ RSpec.describe DataSeeder, type: :service do
   it 'can be run more than once' do
     expect do
       described_class.seed_data!
-    end.to change(Api, :count).by(0)
-                              .and change(ApiRoute, :count).by(0)
+    end.to change(Api, :count).by(0).and change(ApiRoute, :count).by(0)
   end
 end
