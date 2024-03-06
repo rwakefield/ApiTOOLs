@@ -42,3 +42,4 @@ node_modules
 *.local
 
 .keep
+.DS_Store
