@@ -45,4 +45,43 @@ RSpec.describe ApiRoute, type: :model do
       expect(api_route.actions).to match_array(described_class::ACTIONS)
     end
   end
+
+  describe '#action_data' do
+    it 'lists route data by action' do
+      DataSeeder.seed_data!
+      api_route = described_class.find_by reference_name: 'pets'
+      expect(JSON.parse(api_route.action_data)).to eq(
+        {
+          'index' => {
+            'controller' => 'pets',
+            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
+            'path' => '/api/:api_uuid/pets',
+            'name' => nil,
+            'method' => 'get'
+          },
+          'new' => {
+            'controller' => 'pets',
+            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
+            'path' => '/api/:api_uuid/pets/new',
+            'name' => 'new_api_pet',
+            'method' => 'get'
+          },
+          'edit' => {
+            'controller' => 'pets',
+            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
+            'path' => '/api/:api_uuid/pets/:id/edit',
+            'name' => 'edit_api_pet',
+            'method' => 'get'
+          },
+          'show' => {
+            'controller' => 'pets',
+            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
+            'path' => '/api/:api_uuid/pets/:id',
+            'name' => nil,
+            'method' => 'get'
+          }
+        }
+      )
+    end
+  end
 end

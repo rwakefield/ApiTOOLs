@@ -3,7 +3,121 @@ openapi: 3.0.1
 info:
   title: API V1
   version: v1
-paths: {}
+paths:
+  "/api/{api_uuid}/books":
+    get:
+      summary: index a books
+      tags:
+      - books
+      parameters:
+      - name: api_uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+  "/api/{api_uuid}/books/{id}":
+    get:
+      summary: show a books
+      tags:
+      - books
+      parameters:
+      - name: api_uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+  "/api/{api_uuid}/pets":
+    get:
+      summary: index a pets
+      tags:
+      - pets
+      parameters:
+      - name: api_uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+  "/api/{api_uuid}/pets/new":
+    get:
+      summary: new a pets
+      tags:
+      - pets
+      parameters:
+      - name: api_uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+  "/api/{api_uuid}/pets/{id}/edit":
+    get:
+      summary: edit a pets
+      tags:
+      - pets
+      parameters:
+      - name: api_uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+  "/api/{api_uuid}/pets/{id}":
+    get:
+      summary: show a pets
+      tags:
+      - pets
+      parameters:
+      - name: api_uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
 servers:
 - url: https://{defaultHost}
   variables:
