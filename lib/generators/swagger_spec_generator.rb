@@ -13,4 +13,18 @@ class SwaggerSpecGenerator < Rails::Generators::Base
       end
     end
   end
+
+  def parsed_action_data
+    @parsed_action_data ||= JSON.parse(action_data).deep_symbolize_keys
+  end
+
+  def title
+    "#{api_route.reference_name.upcase} Api"
+  end
+
+  private
+
+  def action_data
+    api_route.action_data.gsub(':api_uuid', '{api_uuid}').gsub(':id', '{id}')
+  end
 end

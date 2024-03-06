@@ -2,5 +2,18 @@
 
 # NOTE: This file is auto generated
 
-<%- api_route.action_data.each do |data| %>
-<% end %>
+require 'swagger_helper'
+
+describe '<%= title %>' do
+<% parsed_action_data.each do |action, data| -%>
+  path '<%= data[:path] %>' do
+    <%= data[:method] %> '<%= action %> a <%= data[:controller] %>' do
+      tags '<%= data[:controller] %>'
+      consumes 'application/json'
+      response '200', 'success' do
+        run_test!
+      end
+    end
+  end
+<% end -%>
+end

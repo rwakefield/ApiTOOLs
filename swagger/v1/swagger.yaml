@@ -3,7 +3,39 @@ openapi: 3.0.1
 info:
   title: API V1
   version: v1
-paths: {}
+paths:
+  "/api/{api_uuid}/pets":
+    get:
+      summary: index a pets
+      tags:
+      - pets
+      responses:
+        '200':
+          description: success
+  "/api/{api_uuid}/pets/new":
+    get:
+      summary: new a pets
+      tags:
+      - pets
+      responses:
+        '200':
+          description: success
+  "/api/{api_uuid}/pets/{id}/edit":
+    get:
+      summary: edit a pets
+      tags:
+      - pets
+      responses:
+        '200':
+          description: success
+  "/api/{api_uuid}/pets/{id}":
+    get:
+      summary: show a pets
+      tags:
+      - pets
+      responses:
+        '200':
+          description: success
 servers:
 - url: https://{defaultHost}
   variables:
