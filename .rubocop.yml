@@ -21,5 +21,9 @@ Metrics/MethodLength:
     - 'db/migrate/*'
     - 'lib/generators/api_controller_generator.rb'
 
+RSpec/EmptyExampleGroup:
+  Exclude:
+    - 'spec/requests/*'
+
 Rspec/ExampleLength:
   Enabled: false

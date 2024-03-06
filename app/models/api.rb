@@ -9,6 +9,7 @@ class Api < ApplicationRecord
 
   def self.refresh!
     Rails::Generators.invoke('api_controller')
+    Rails::Generators.invoke('swagger_spec')
   end
 
   def self.call(mapper, _options = {})
