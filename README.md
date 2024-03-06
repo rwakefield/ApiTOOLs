@@ -8,6 +8,7 @@
 * `bundle install`
 * `rake db:create`
 * `rake db:seed`
+* `rake rswag:specs:swaggerize`
 * `bin/vite update`
 * `yarn`
 

@@ -93,4 +93,63 @@ RSpec.describe Api, type: :model do
       expect(api.reload.schema).not_to be_nil
     end
   end
+
+  describe '#route_data' do
+    it 'lists all the available route_data configured by the api' do
+      DataSeeder.seed_data!
+      api = described_class.find_by uuid: DataSeeder::API_UUID
+      expect(JSON.parse(api.route_data)).to eq(
+        {
+          'GET pets#index' => {
+            'controller' => 'pets',
+            'action' => 'index',
+            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
+            'path' => '/api/:api_uuid/pets',
+            'name' => nil,
+            'method' => 'get'
+          },
+          'GET pets#new' => {
+            'controller' => 'pets',
+            'action' => 'new',
+            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
+            'path' => '/api/:api_uuid/pets/new',
+            'name' => 'new_api_pet',
+            'method' => 'get'
+          },
+          'GET pets#edit' => {
+            'controller' => 'pets',
+            'action' => 'edit',
+            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
+            'path' => '/api/:api_uuid/pets/:id/edit',
+            'name' => 'edit_api_pet',
+            'method' => 'get'
+          },
+          'GET pets#show' => {
+            'controller' => 'pets',
+            'action' => 'show',
+            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
+            'path' => '/api/:api_uuid/pets/:id',
+            'name' => nil,
+            'method' => 'get'
+          },
+          'GET books#index' => {
+            'controller' => 'books',
+            'action' => 'index',
+            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
+            'path' => '/api/:api_uuid/books',
+            'name' => 'api_books',
+            'method' => 'get'
+          },
+          'GET books#show' => {
+            'controller' => 'books',
+            'action' => 'show',
+            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
+            'path' => '/api/:api_uuid/books/:id',
+            'name' => 'api_book',
+            'method' => 'get'
+          }
+        }
+      )
+    end
+  end
 end
