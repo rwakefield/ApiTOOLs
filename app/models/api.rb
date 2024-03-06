@@ -3,6 +3,8 @@
 require 'rails/generators'
 
 class Api < ApplicationRecord
+  include Restful
+
   has_many :api_routes, dependent: :destroy
 
   def self.refresh!
@@ -44,18 +46,5 @@ class Api < ApplicationRecord
     info[:name] = route.name
     info[:method] = http_method_for(info[:action])
     info
-  end
-
-  def http_method_for(action)
-    case action
-    when 'create'
-      'put'
-    when 'update'
-      'patch'
-    when 'delete'
-      'delete'
-    else
-      'get'
-    end
   end
 end
