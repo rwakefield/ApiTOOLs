@@ -1,0 +1,79 @@
+version: 2.1
+orbs:
+  ruby: circleci/ruby@2.1.1
+  node: circleci/node@5.2.0
+  browser-tools: circleci/browser-tools@1.4.8
+jobs:
+  build:
+    docker:
+      - image: cimg/ruby:3.0.0
+        environment:
+          PGHOST: localhost
+          PGUSER: api_tools
+          RAILS_ENV: test
+      - image: postgres:16.2
+        environment:
+          CC_TEST_REPORTER_ID: 5ac110aae067bc46b00248f8523db2cfc14f2036e295c57b766090cd849768c7
+          POSTGRES_USER: api_tools
+          POSTGRES_DB: api_tools_test
+          POSTGRES_PASSWORD: 'password'
+    steps:
+      - checkout
+      - browser-tools/install-browser-tools
+      - node/install:
+          install-yarn: true
+          node-version: '21.6.2'
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - restore_cache:
+          keys:
+            - &gem-cache gem-cache-v1-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+            - gem-cache-v1-{{ arch }}-{{ .Branch }}
+            - gem-cache-v1
+      - run: bundle install --path vendor/bundle
+      - save_cache:
+          key: *gem-cache
+          paths:
+            - vendor/bundle
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run: bin/rails db:create
+      - run: bin/rails db:schema:load
+      - run: bundle exec rubocop
+      - run:
+          name: Run tests
+          command: |
+              bundle exec rspec --drb --colour --format documentation
+      - restore_cache:
+          keys:
+            - &asset-cache asset-cache-v1-{{ arch }}-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - asset-cache-v1-{{ arch }}-{{ .Branch }}
+            - asset-cache-v1
+      - run: bundle exec rake assets:precompile
+      - save_cache:
+          key: *asset-cache
+          paths:
+            - public/assets
+            - tmp/cache/assets/sprockets
+      - store_artifacts:
+          path: coverage
+workflows:
+  check_stuff:
+    jobs:
+      - build
