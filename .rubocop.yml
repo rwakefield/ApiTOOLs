@@ -27,3 +27,6 @@ RSpec/EmptyExampleGroup:
 
 Rspec/ExampleLength:
   Enabled: false
+
+Rspec/ExpectChange:
+  Enabled: false
