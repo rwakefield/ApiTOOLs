@@ -2,22 +2,31 @@
 
 require 'rails_helper'
 
-RSpec.describe Api, type: :model do
+class TestPetsController < ApplicationController
+end
+
+class TestBooksController < ApplicationController
+end
+
+RSpec.describe Api do
+  let!(:api) { create :api }
+  let(:api_uuid) { api.uuid }
+
+  before do
+    create :api_route, reference_name: 'test_pet', api: api
+    create :api_route, reference_name: 'test_book', api: api, actions: %w[index show]
+    Rails.application.reload_routes!
+  end
+
   describe 'routes for Api', type: :routing do
-    let(:api_uuid) { DataSeeder::API_UUID }
-
-    before do
-      DataSeeder.seed_data!
-    end
-
     it 'loads expected routes' do
       expected = %w[
-        api_pets
-        new_api_pet
-        edit_api_pet
-        api_pet
-        api_books
-        api_book
+        api_test_pets
+        new_api_test_pet
+        edit_api_test_pet
+        api_test_pet
+        api_test_books
+        api_test_book
         api_index
         new_api
         edit_api
@@ -26,51 +35,55 @@ RSpec.describe Api, type: :model do
     end
 
     specify do
-      expect(get("/api/#{api_uuid}/pets/")).to route_to('pets#index', api_uuid: api_uuid)
+      expect(get("/api/#{api_uuid}/test_pets/")).to route_to('test_pets#index', api_uuid: api_uuid)
     end
 
     specify do
-      expect(post("/api/#{api_uuid}/pets/")).to route_to('pets#create', api_uuid: api_uuid)
+      expect(post("/api/#{api_uuid}/test_pets/")).to route_to('test_pets#create', api_uuid: api_uuid)
     end
 
     specify do
-      expect(get("/api/#{api_uuid}/pets/new")).to route_to('pets#new', api_uuid: api_uuid)
+      expect(get("/api/#{api_uuid}/test_pets/new")).to route_to('test_pets#new', api_uuid: api_uuid)
     end
 
     specify do
-      expect(get("/api/#{api_uuid}/pets/1/edit")).to route_to('pets#edit', api_uuid: api_uuid, id: '1')
+      expect(get("/api/#{api_uuid}/test_pets/1/edit")).to route_to('test_pets#edit', api_uuid: api_uuid, id: '1')
     end
 
     specify do
-      expect(get("/api/#{api_uuid}/pets/1")).to route_to('pets#show', api_uuid: api_uuid, id: '1')
+      expect(get("/api/#{api_uuid}/test_pets/1")).to route_to('test_pets#show', api_uuid: api_uuid, id: '1')
     end
 
     specify do
-      expect(patch("/api/#{api_uuid}/pets/1")).to route_to('pets#update', api_uuid: api_uuid, id: '1')
+      expect(patch("/api/#{api_uuid}/test_pets/1")).to route_to('test_pets#update', api_uuid: api_uuid, id: '1')
     end
 
     specify do
-      expect(put("/api/#{api_uuid}/pets/1")).to route_to('pets#update', api_uuid: api_uuid, id: '1')
+      expect(put("/api/#{api_uuid}/test_pets/1")).to route_to('test_pets#update', api_uuid: api_uuid, id: '1')
     end
 
     specify do
-      expect(delete("/api/#{api_uuid}/pets/1")).to route_to('pets#destroy', api_uuid: api_uuid, id: '1')
+      expect(delete("/api/#{api_uuid}/test_pets/1")).to route_to('test_pets#destroy', api_uuid: api_uuid, id: '1')
     end
 
     specify do
-      expect(get("/api/#{api_uuid}/books/")).to route_to('books#index', api_uuid: api_uuid)
+      expect(get("/api/#{api_uuid}/test_books/")).to route_to('test_books#index', api_uuid: api_uuid)
     end
 
     specify do
-      expect(get("/api/#{api_uuid}/books/1")).to route_to('books#show', api_uuid: api_uuid, id: '1')
+      expect(get("/api/#{api_uuid}/test_books/1")).to route_to('test_books#show', api_uuid: api_uuid, id: '1')
     end
   end
 
   describe 'relationships' do
     it 'has_many api_routes' do
+      expect(api.api_routes.pluck(:reference_name)).to contain_exactly('test_pets', 'test_books')
+    end
+
+    it 'dependent destroys api_routes' do
       expect do
-        api_with_api_routes(count: 3)
-      end.to change(ApiRoute, :count).from(0).to(3)
+        api.destroy!
+      end.to change { ApiRoute.count }.by(-2)
     end
   end
 
@@ -96,56 +109,54 @@ RSpec.describe Api, type: :model do
 
   describe '#route_data' do
     it 'lists all the available route_data configured by the api' do
-      DataSeeder.seed_data!
-      api = described_class.find_by uuid: DataSeeder::API_UUID
       expect(JSON.parse(api.route_data)).to eq(
         {
-          'GET pets#index' => {
-            'controller' => 'pets',
+          'GET test_pets#index' => {
+            'controller' => 'test_pets',
             'action' => 'index',
-            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
-            'path' => '/api/:api_uuid/pets',
+            'api_uuid' => api_uuid,
+            'path' => '/api/:api_uuid/test_pets',
             'name' => nil,
             'method' => 'get'
           },
-          'GET pets#new' => {
-            'controller' => 'pets',
+          'GET test_pets#new' => {
+            'controller' => 'test_pets',
             'action' => 'new',
-            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
-            'path' => '/api/:api_uuid/pets/new',
-            'name' => 'new_api_pet',
+            'api_uuid' => api_uuid,
+            'path' => '/api/:api_uuid/test_pets/new',
+            'name' => 'new_api_test_pet',
             'method' => 'get'
           },
-          'GET pets#edit' => {
-            'controller' => 'pets',
+          'GET test_pets#edit' => {
+            'controller' => 'test_pets',
             'action' => 'edit',
-            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
-            'path' => '/api/:api_uuid/pets/:id/edit',
-            'name' => 'edit_api_pet',
+            'api_uuid' => api_uuid,
+            'path' => '/api/:api_uuid/test_pets/:id/edit',
+            'name' => 'edit_api_test_pet',
             'method' => 'get'
           },
-          'GET pets#show' => {
-            'controller' => 'pets',
+          'GET test_pets#show' => {
+            'controller' => 'test_pets',
             'action' => 'show',
-            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
-            'path' => '/api/:api_uuid/pets/:id',
+            'api_uuid' => api_uuid,
+            'path' => '/api/:api_uuid/test_pets/:id',
             'name' => nil,
             'method' => 'get'
           },
-          'GET books#index' => {
-            'controller' => 'books',
+          'GET test_books#index' => {
+            'controller' => 'test_books',
             'action' => 'index',
-            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
-            'path' => '/api/:api_uuid/books',
-            'name' => 'api_books',
+            'api_uuid' => api_uuid,
+            'path' => '/api/:api_uuid/test_books',
+            'name' => 'api_test_books',
             'method' => 'get'
           },
-          'GET books#show' => {
-            'controller' => 'books',
+          'GET test_books#show' => {
+            'controller' => 'test_books',
             'action' => 'show',
-            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
-            'path' => '/api/:api_uuid/books/:id',
-            'name' => 'api_book',
+            'api_uuid' => api_uuid,
+            'path' => '/api/:api_uuid/test_books/:id',
+            'name' => 'api_test_book',
             'method' => 'get'
           }
         }

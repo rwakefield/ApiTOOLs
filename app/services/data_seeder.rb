@@ -11,8 +11,5 @@ class DataSeeder
     books = api.api_routes.find_or_create_by reference_name: 'books'
     books.actions = %w[index show]
     books.save!
-
-    Api.reload! if Rails.env.development?
-    Rails.application.reload_routes!
   end
 end

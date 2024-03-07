@@ -2,10 +2,24 @@
 
 require 'rails_helper'
 
+class TestPetsController < ApplicationController
+end
+
+class TestBooksController < ApplicationController
+end
+
 RSpec.describe ApiRoute, type: :model do
+  let!(:api) { create :api }
+  let(:api_uuid) { api.uuid }
+
+  before do
+    create :api_route, reference_name: 'test_pet', api: api
+    create :api_route, reference_name: 'test_book', api: api, actions: %w[index show]
+    Rails.application.reload_routes!
+  end
+
   describe 'relationships' do
     it 'belongs_to api' do
-      api = create :api
       api_route = create :api_route, api: api
       expect(api_route.api).to eq(api)
     end
@@ -48,35 +62,34 @@ RSpec.describe ApiRoute, type: :model do
 
   describe '#action_data' do
     it 'lists route data by action' do
-      DataSeeder.seed_data!
-      api_route = described_class.find_by reference_name: 'pets'
+      api_route = described_class.find_by reference_name: 'test_pets'
       expect(JSON.parse(api_route.action_data)).to eq(
         {
           'index' => {
-            'controller' => 'pets',
-            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
-            'path' => '/api/:api_uuid/pets',
+            'controller' => 'test_pets',
+            'api_uuid' => api_uuid,
+            'path' => '/api/:api_uuid/test_pets',
             'name' => nil,
             'method' => 'get'
           },
           'new' => {
-            'controller' => 'pets',
-            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
-            'path' => '/api/:api_uuid/pets/new',
-            'name' => 'new_api_pet',
+            'controller' => 'test_pets',
+            'api_uuid' => api_uuid,
+            'path' => '/api/:api_uuid/test_pets/new',
+            'name' => 'new_api_test_pet',
             'method' => 'get'
           },
           'edit' => {
-            'controller' => 'pets',
-            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
-            'path' => '/api/:api_uuid/pets/:id/edit',
-            'name' => 'edit_api_pet',
+            'controller' => 'test_pets',
+            'api_uuid' => api_uuid,
+            'path' => '/api/:api_uuid/test_pets/:id/edit',
+            'name' => 'edit_api_test_pet',
             'method' => 'get'
           },
           'show' => {
-            'controller' => 'pets',
-            'api_uuid' => 'fbc73e7e-cf3c-4eaa-bf15-84fbcb99aa85',
-            'path' => '/api/:api_uuid/pets/:id',
+            'controller' => 'test_pets',
+            'api_uuid' => api_uuid,
+            'path' => '/api/:api_uuid/test_pets/:id',
             'name' => nil,
             'method' => 'get'
           }

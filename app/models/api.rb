@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+require 'rails/generators'
+
 class Api < ApplicationRecord
   include Restful
 
   has_many :api_routes, dependent: :destroy
 
-  def self.refresh!
+  def self.initialize!
     Rails::Generators.invoke('api_controller')
     Rails::Generators.invoke('swagger_spec')
   end
