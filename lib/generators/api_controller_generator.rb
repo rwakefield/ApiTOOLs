@@ -1,15 +1,19 @@
 # frozen_string_literal: true
 
-class ApiControllerGenerator < Rails::Generators::Base
-  source_root File.expand_path('templates', __dir__)
+require 'rails/generators'
 
-  attr_reader :api_route
+module Generators
+  class ApiControllerGenerator < Rails::Generators::Base
+    source_root File.expand_path('templates', __dir__)
 
-  def create_controller_files
-    Api.find_each do |api|
-      api.api_routes.find_each do |api_route|
-        @api_route = api_route
-        template 'api_controller.rb', "app/controllers/#{api_route.reference_name}_controller.rb"
+    attr_reader :api_route
+
+    def create_controller_files
+      Api.find_each do |api|
+        api.api_routes.find_each do |api_route|
+          @api_route = api_route
+          template 'api_controller.rb', "app/controllers/#{api_route.reference_name}_controller.rb"
+        end
       end
     end
   end

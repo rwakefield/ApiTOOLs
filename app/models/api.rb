@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails/generators'
-
 class Api < ApplicationRecord
   include Restful
 

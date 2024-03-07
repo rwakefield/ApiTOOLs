@@ -5,11 +5,12 @@ Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
   get 'welcome/index'
 
-  concern :routable, Api
-
-  Api.find_each do |api|
-    resources :api, param: :uuid do
-      concerns :routable, api: api
+  if ActiveRecord::Base.connection.table_exists? 'apis'
+    concern :routable, Api
+    Api.find_each do |api|
+      resources :api, param: :uuid do
+        concerns :routable, api: api
+      end
     end
   end
 
