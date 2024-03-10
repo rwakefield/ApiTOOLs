@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'with_restful'
 
 class TestPetsController < ApplicationController
 end
@@ -8,7 +9,9 @@ end
 class TestBooksController < ApplicationController
 end
 
-RSpec.describe ApiRoute, type: :model do
+RSpec.describe ApiRoute do
+  include_context 'with restful'
+
   let!(:api) { create :api }
   let(:api_uuid) { api.uuid }
 
