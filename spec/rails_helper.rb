@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 require 'simplecov'
-SimpleCov.start 'rails'
+SimpleCov.start 'rails' do
+  add_filter 'lib'
+end
 
 require 'spec_helper'
 ENV['RAILS_ENV'] = 'test'

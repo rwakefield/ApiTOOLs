@@ -165,5 +165,21 @@ RSpec.describe Api do
         }
       )
     end
+
+    describe '.initialize!' do
+      before do
+        allow(Rails::Generators).to receive(:invoke)
+      end
+
+      it 'runs the controller generators' do
+        described_class.initialize!
+        expect(Rails::Generators).to have_received(:invoke).once.with('api_controller')
+      end
+
+      it 'runs the spec generators' do
+        described_class.initialize!
+        expect(Rails::Generators).to have_received(:invoke).once.with('swagger_spec')
+      end
+    end
   end
 end
