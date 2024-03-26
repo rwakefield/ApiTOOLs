@@ -3,6 +3,8 @@
 module Restful
   extend ActiveSupport::Concern
 
+  ACTIONS = %w[index show new edit create update destroy].freeze
+
   included do
     def http_method_for(action)
       case action
@@ -10,10 +12,10 @@ module Restful
         'put'
       when 'update'
         'patch'
-      when 'delete'
+      when 'destroy'
         'delete'
       else
-        'get'
+        ACTIONS.include?(action) ? 'get' : nil
       end
     end
   end

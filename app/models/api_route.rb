@@ -3,8 +3,6 @@
 class ApiRoute < ApplicationRecord
   include Restful
 
-  ACTIONS = %w[index show new edit create update destroy].freeze
-
   belongs_to :api, optional: true
 
   validates :actions,

@@ -36,6 +36,8 @@ group :development, :test do
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'rspec'
+  gem 'rspec_junit_formatter', require: false
   gem 'rspec-rails'
 end
 
