@@ -47,6 +47,6 @@ node_modules
 
 # Development Generated Files for Testing
 app/controllers/books_controller.rb
-app/controllers/pets_controller.rb
+#app/controllers/pets_controller.rb
 spec/requests/books_spec.rb
-spec/requests/pets_spec.rb
+#spec/requests/pets_spec.rb

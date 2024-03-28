@@ -4,6 +4,7 @@ class ApiRoute < ApplicationRecord
   include Restful
 
   belongs_to :api, optional: true
+  has_many :api_items, dependent: :destroy
 
   validates :actions,
             length: {
@@ -24,6 +25,12 @@ class ApiRoute < ApplicationRecord
   def reference_name=(value)
     value = value.pluralize.parameterize if value.present?
     super(value)
+  end
+
+  def data
+    @data ||= {
+      data: api_items.map { |item| ApiItemSerializer.new(api_item: item).serializable_hash }
+    }.to_json
   end
 
   private

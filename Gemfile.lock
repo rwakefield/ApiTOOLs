@@ -121,7 +121,7 @@ GEM
       rdoc
       reline (>= 0.4.2)
     json (2.7.1)
-    json-schema (4.2.0)
+    json-schema (4.3.0)
       addressable (>= 2.8)
     language_server-protocol (3.17.0.3)
     loofah (2.22.0)
@@ -145,7 +145,7 @@ GEM
       net-protocol
     net-protocol (0.2.2)
       timeout
-    net-smtp (0.4.0.1)
+    net-smtp (0.5.0)
       net-protocol
     nio4r (2.7.1)
     nokogiri (1.16.3-aarch64-linux)
@@ -278,7 +278,7 @@ GEM
       rubocop-factory_bot (~> 2.22)
     ruby-progressbar (1.13.0)
     rubyzip (2.3.2)
-    selenium-webdriver (4.18.1)
+    selenium-webdriver (4.19.0)
       base64 (~> 0.2)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
@@ -363,4 +363,4 @@ RUBY VERSION
    ruby 3.0.0p0
 
 BUNDLED WITH
-   2.2.3
+   2.5.7

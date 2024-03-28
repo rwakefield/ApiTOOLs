@@ -26,6 +26,21 @@ RSpec.describe ApiRoute do
       api_route = create :api_route, api: api
       expect(api_route.api).to eq(api)
     end
+
+    it 'has_many api_items' do
+      api_route = create :api_route, api: api
+      create_list :api_item, 2, api_route: api_route
+      expect(api_route.api_items.count).to eq(2)
+    end
+
+    it 'dependent destroys api_items' do
+      api_route = create :api_route, api: api
+      create_list :api_item, 2, api_route: api_route
+
+      expect do
+        api_route.destroy!
+      end.to change { ApiItem.count }.by(-2)
+    end
   end
 
   describe 'validations' do
@@ -98,6 +113,47 @@ RSpec.describe ApiRoute do
           }
         }
       )
+    end
+  end
+
+  describe '#data' do
+    it 'seralizes the api_items data' do
+      api_route = create :api_route, reference_name: 'test_pet', api: api
+      rex = create :api_item, api_route: api_route, data: { name: 'rex' }
+      skippy = create :api_item, api_route: api_route, data: { name: 'skippy' }
+      expected = {
+        'data' => [
+          {
+            'type' => 'test_pets',
+            'id' => rex.uuid,
+            'attributes' => {
+              'name' => 'rex'
+            },
+            'relationships' => {
+              'api_route' => {
+                'data' => {
+                  'id' => api_route.uuid, 'type' => 'api_routes'
+                }
+              }
+            }
+          },
+          {
+            'type' => 'test_pets',
+            'id' => skippy.uuid,
+            'attributes' => {
+              'name' => 'skippy'
+            },
+            'relationships' => {
+              'api_route' => {
+                'data' => {
+                  'id' => api_route.uuid, 'type' => 'api_routes'
+                }
+              }
+            }
+          }
+        ]
+      }
+      expect(JSON.parse(api_route.data)).to eq(expected)
     end
   end
 end

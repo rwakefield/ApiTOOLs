@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_05_155921) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_28_143507) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "api_items", force: :cascade do |t|
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.jsonb "data", default: "{}", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "api_route_id"
+    t.index ["api_route_id"], name: "index_api_items_on_api_route_id"
+    t.index ["data"], name: "index_api_items_on_data", using: :gin
+  end
 
   create_table "api_routes", force: :cascade do |t|
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
