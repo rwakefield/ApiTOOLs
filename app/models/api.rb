@@ -15,7 +15,7 @@ class Api < ApplicationRecord
   def self.call(mapper, _options = {})
     Api.find_each do |api|
       api.api_routes.each do |route|
-        mapper.resources route.reference_name.to_sym, only: route.actions
+        mapper.resources route.reference_name.to_sym, only: route.actions, param: :uuid
       end
     end
   end

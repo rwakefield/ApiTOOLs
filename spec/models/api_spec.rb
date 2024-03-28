@@ -50,23 +50,23 @@ RSpec.describe Api do
     end
 
     specify do
-      expect(get("/api/#{api_uuid}/test_pets/1/edit")).to route_to('test_pets#edit', api_uuid: api_uuid, id: '1')
+      expect(get("/api/#{api_uuid}/test_pets/1/edit")).to route_to('test_pets#edit', api_uuid: api_uuid, uuid: '1')
     end
 
     specify do
-      expect(get("/api/#{api_uuid}/test_pets/1")).to route_to('test_pets#show', api_uuid: api_uuid, id: '1')
+      expect(get("/api/#{api_uuid}/test_pets/1")).to route_to('test_pets#show', api_uuid: api_uuid, uuid: '1')
     end
 
     specify do
-      expect(patch("/api/#{api_uuid}/test_pets/1")).to route_to('test_pets#update', api_uuid: api_uuid, id: '1')
+      expect(patch("/api/#{api_uuid}/test_pets/1")).to route_to('test_pets#update', api_uuid: api_uuid, uuid: '1')
     end
 
     specify do
-      expect(put("/api/#{api_uuid}/test_pets/1")).to route_to('test_pets#update', api_uuid: api_uuid, id: '1')
+      expect(put("/api/#{api_uuid}/test_pets/1")).to route_to('test_pets#update', api_uuid: api_uuid, uuid: '1')
     end
 
     specify do
-      expect(delete("/api/#{api_uuid}/test_pets/1")).to route_to('test_pets#destroy', api_uuid: api_uuid, id: '1')
+      expect(delete("/api/#{api_uuid}/test_pets/1")).to route_to('test_pets#destroy', api_uuid: api_uuid, uuid: '1')
     end
 
     specify do
@@ -74,7 +74,7 @@ RSpec.describe Api do
     end
 
     specify do
-      expect(get("/api/#{api_uuid}/test_books/1")).to route_to('test_books#show', api_uuid: api_uuid, id: '1')
+      expect(get("/api/#{api_uuid}/test_books/1")).to route_to('test_books#show', api_uuid: api_uuid, uuid: '1')
     end
   end
 
@@ -100,18 +100,9 @@ RSpec.describe Api do
     end
   end
 
-  describe '#schema' do
-    it 'has a default value' do
-      api = described_class.new
-
-      api.save!
-
-      expect(api.reload.schema).not_to be_nil
-    end
-  end
-
   describe '#route_data' do
     it 'lists all the available route_data configured by the api' do
+      pp JSON.parse(api.route_data)
       expect(JSON.parse(api.route_data)).to eq(
         {
           'GET test_pets#index' => {
@@ -134,7 +125,8 @@ RSpec.describe Api do
             'controller' => 'test_pets',
             'action' => 'edit',
             'api_uuid' => api_uuid,
-            'path' => '/api/:api_uuid/test_pets/:id/edit',
+            'uuid' => ':uuid',
+            'path' => '/api/:api_uuid/test_pets/:uuid/edit',
             'name' => 'edit_api_test_pet',
             'method' => 'get'
           },
@@ -142,7 +134,8 @@ RSpec.describe Api do
             'controller' => 'test_pets',
             'action' => 'show',
             'api_uuid' => api_uuid,
-            'path' => '/api/:api_uuid/test_pets/:id',
+            'uuid' => ':uuid',
+            'path' => '/api/:api_uuid/test_pets/:uuid',
             'name' => nil,
             'method' => 'get'
           },
@@ -158,7 +151,9 @@ RSpec.describe Api do
             'controller' => 'test_books',
             'action' => 'show',
             'api_uuid' => api_uuid,
-            'path' => '/api/:api_uuid/test_books/:id',
+            'uuid' => ':uuid',
+            'uuid' => ':uuid',
+            'path' => '/api/:api_uuid/test_books/:uuid',
             'name' => 'api_test_book',
             'method' => 'get'
           }

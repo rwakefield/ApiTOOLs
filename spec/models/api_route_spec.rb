@@ -6,9 +6,6 @@ require 'with_restful'
 class TestPetsController < ApplicationController
 end
 
-class TestBooksController < ApplicationController
-end
-
 RSpec.describe ApiRoute do
   include_context 'with restful'
 
@@ -17,7 +14,6 @@ RSpec.describe ApiRoute do
 
   before do
     create :api_route, reference_name: 'test_pet', api: api
-    create :api_route, reference_name: 'test_book', api: api, actions: %w[index show]
     Rails.application.reload_routes!
   end
 
@@ -25,6 +21,21 @@ RSpec.describe ApiRoute do
     it 'belongs_to api' do
       api_route = create :api_route, api: api
       expect(api_route.api).to eq(api)
+    end
+
+    it 'has_many api_items' do
+      api_route = create :api_route, api: api
+      create_list :api_item, 2, api_route: api_route
+      expect(api_route.api_items.count).to eq(2)
+    end
+
+    it 'dependent destroys api_items' do
+      api_route = create :api_route, api: api
+      create_list :api_item, 2, api_route: api_route
+
+      expect do
+        api_route.destroy!
+      end.to change { ApiItem.count }.by(-2)
     end
   end
 
@@ -85,19 +96,31 @@ RSpec.describe ApiRoute do
           'edit' => {
             'controller' => 'test_pets',
             'api_uuid' => api_uuid,
-            'path' => '/api/:api_uuid/test_pets/:id/edit',
+            'uuid' => ':uuid',
+            'path' => '/api/:api_uuid/test_pets/:uuid/edit',
             'name' => 'edit_api_test_pet',
             'method' => 'get'
           },
           'show' => {
             'controller' => 'test_pets',
             'api_uuid' => api_uuid,
-            'path' => '/api/:api_uuid/test_pets/:id',
+            'uuid' => ':uuid',
+            'path' => '/api/:api_uuid/test_pets/:uuid',
             'name' => nil,
             'method' => 'get'
           }
         }
       )
+    end
+  end
+
+  describe '#schema' do
+    it 'has a default value' do
+      api = described_class.new reference_name: 'pet'
+
+      api.save!
+
+      expect(api.reload.schema).not_to be_nil
     end
   end
 end
