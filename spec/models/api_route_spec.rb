@@ -26,6 +26,21 @@ RSpec.describe ApiRoute do
       api_route = create :api_route, api: api
       expect(api_route.api).to eq(api)
     end
+
+    it 'has_many api_items' do
+      api_route = create :api_route, api: api
+      create_list :api_item, 2, api_route: api_route
+      expect(api_route.api_items.count).to eq(2)
+    end
+
+    it 'dependent destroys api_items' do
+      api_route = create :api_route, api: api
+      create_list :api_item, 2, api_route: api_route
+
+      expect do
+        api_route.destroy!
+      end.to change { ApiItem.count }.by(-2)
+    end
   end
 
   describe 'validations' do
