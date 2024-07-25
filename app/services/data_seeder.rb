@@ -17,6 +17,15 @@ class DataSeeder
     },
     required: %w[title author]
   }.freeze
+  CARS_SCHEMA = {
+    type: :object,
+    properties: {
+      make: { type: :string },
+      model: { type: :string },
+      year: { type: :string }
+    },
+    required: %w[make model year]
+  }.freeze
 
   def self.seed_data!
     api = Api.find_or_create_by uuid: API_UUID
@@ -27,8 +36,13 @@ class DataSeeder
 
     books = api.api_routes.find_or_create_by reference_name: 'books'
     books.schema = BOOKS_SCHEMA
-    books.actions = %w[index show]
+    books.actions = %w[index show create]
     books.save!
+
+    cars = api.api_routes.find_or_create_by reference_name: 'cars'
+    cars.schema = CARS_SCHEMA
+    cars.actions = %w[index show create]
+    cars.save!
 
     Rails.application.reload_routes!
   end

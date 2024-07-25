@@ -85,7 +85,7 @@ describe 'PETS Api' do
         },
         required: %w[name]
       }
-      response '200', 'succes' do
+      response '200', 'success' do
         let(:pet) do
           {
             name: 'barry'
@@ -102,7 +102,7 @@ describe 'PETS Api' do
       produces 'application/json'
       parameter name: :api_uuid, in: :path, type: :string
       parameter name: :uuid, in: :path, type: :string
-      response '200', 'succes' do
+      response '200', 'success' do
         run_test!
       end
     end

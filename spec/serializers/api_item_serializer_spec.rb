@@ -6,7 +6,7 @@ RSpec.describe ApiItemSerializer, type: :serializer do
   def expected_data_for(api_item:)
     {
       id: api_item.uuid,
-      type: api_item.api_route.reference_name.sigularize.to_sym,
+      type: api_item.api_route.reference_name.singularize.to_sym,
       attributes: {
         data: JSON.parse(api_item.data)
       }

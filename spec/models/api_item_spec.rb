@@ -2,17 +2,10 @@
 
 require 'rails_helper'
 
-class TestPetsController < ApplicationController
-end
-
 RSpec.describe ApiItem do
   let(:api_route) { create :api_route, reference_name: 'test_pet', api: api }
   let(:api) { create :api }
   let(:api_uuid) { api.uuid }
-
-  before do
-    Rails.application.reload_routes!
-  end
 
   describe 'relationships' do
     it 'belongs_to api_route' do

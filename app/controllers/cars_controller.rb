@@ -2,5 +2,5 @@
 
 # NOTE: This file is auto generated
 
-class PetsController < ApiController
+class CarsController < ApiController
 end
