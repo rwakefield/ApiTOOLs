@@ -5,6 +5,8 @@ source 'https://rubygems.org'
 ruby '3.0.0'
 
 # custom
+gem 'jsonapi-serializer'
+gem 'json-schema'
 gem 'rswag'
 gem 'rubocop', require: false
 gem 'rubocop-rails', require: false

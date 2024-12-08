@@ -4,47 +4,9 @@ info:
   title: API V1
   version: v1
 paths:
-  "/api/{api_uuid}/books":
-    get:
-      summary: index a books
-      tags:
-      - books
-      parameters:
-      - name: api_uuid
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: success
-  "/api/{api_uuid}/books/{id}":
-    get:
-      summary: show a books
-      tags:
-      - books
-      parameters:
-      - name: api_uuid
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: success
   "/api/{api_uuid}/pets":
     get:
-      summary: index a pets
+      summary: pets#index
       tags:
       - pets
       parameters:
@@ -53,17 +15,35 @@ paths:
         required: true
         schema:
           type: string
-      - name: id
+      responses:
+        '200':
+          description: success
+    post:
+      summary: pets#create
+      tags:
+      - pets
+      parameters:
+      - name: api_uuid
         in: path
         required: true
         schema:
           type: string
       responses:
-        '200':
-          description: success
-  "/api/{api_uuid}/pets/new":
+        '201':
+          description: created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+              - name
+  "/api/{api_uuid}/pets/{uuid}":
     get:
-      summary: new a pets
+      summary: pets#show
       tags:
       - pets
       parameters:
@@ -72,7 +52,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: id
+      - name: uuid
         in: path
         required: true
         schema:
@@ -80,9 +60,8 @@ paths:
       responses:
         '200':
           description: success
-  "/api/{api_uuid}/pets/{id}/edit":
-    get:
-      summary: edit a pets
+    patch:
+      summary: pets#update
       tags:
       - pets
       parameters:
@@ -91,17 +70,26 @@ paths:
         required: true
         schema:
           type: string
-      - name: id
+      - name: uuid
         in: path
         required: true
         schema:
           type: string
       responses:
         '200':
-          description: success
-  "/api/{api_uuid}/pets/{id}":
-    get:
-      summary: show a pets
+          description: succes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+              - name
+    delete:
+      summary: pets#destroy
       tags:
       - pets
       parameters:
@@ -110,14 +98,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: id
+      - name: uuid
         in: path
         required: true
         schema:
           type: string
       responses:
         '200':
-          description: success
+          description: succes
 servers:
 - url: https://{defaultHost}
   variables:

@@ -4,6 +4,7 @@ class ApiRoute < ApplicationRecord
   include Restful
 
   belongs_to :api, optional: true
+  has_many :api_items, dependent: :destroy
 
   validates :actions,
             length: {
@@ -16,6 +17,8 @@ class ApiRoute < ApplicationRecord
               allow_blank: true
             }
   validates :reference_name, presence: true
+
+  delegate :schema, to: :api, prefix: true
 
   def action_data
     @action_data ||= fetch_action_data.to_json

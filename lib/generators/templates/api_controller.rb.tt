@@ -1,0 +1,8 @@
+# frozen_string_literal: true
+
+# NOTE: This file is auto generated
+
+<% module_namespacing do -%>
+class <%= api_route.reference_name.camelize %>Controller < ApiController
+end
+<% end -%>
